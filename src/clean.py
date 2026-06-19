@@ -13,7 +13,7 @@ def clean_chess(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = df.copy()
     df = df.drop(columns=['Unnamed: 0'])
-    df['rating_diff'] = df['white_rating'] - df['black_rating']
+    df['rating_diff'] = (df['white_rating'] - df['black_rating'])
     df = df.drop(columns=['opening_response'])
     assert df['rating_diff'].notna().all()
     assert df.duplicated().sum() == 0

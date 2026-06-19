@@ -1,7 +1,8 @@
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
-def basic_stats(series: pd.Series) -> dict[str:float]:
+
+def basic_stats(series: pd.Series) -> dict[str, float]:
     """
     Takes a numeric pandas series and returns its basic statistics in dictonary.
     measures mean, std, median, skew, q1, q2, and q3.
