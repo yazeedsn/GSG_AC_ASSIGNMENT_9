@@ -15,10 +15,10 @@ WHO_URL = 'https://github.com/Priyankkoul/Life-Expectancy-WHO---Data-Analytics/b
 
 
 if __name__ == '__main__':
-    df = clean_chess(pd.read_csv(RAW_DATA_DIR/'chess_games.csv'))
+    chess_df = clean_chess(pd.read_csv(RAW_DATA_DIR/'chess_games.csv'))
 
-    turns = df['turns']
-    rating_diff = df['rating_diff']
+    turns = chess_df['turns']
+    rating_diff = chess_df['rating_diff']
 
     # Descriptive Statistics
     turns_stats = basic_stats(turns)
@@ -42,10 +42,10 @@ if __name__ == '__main__':
     print(f"Shapiro-Wilk  p = {p:.6f}")  
     
     # normalization
-    df['turns_log'] = np.log(turns)
-    print('turns skewness after log transform', df['turns_log'].skew())
-    df['turns_sqrt'] = np.sqrt(rating_diff - rating_diff.min())
-    print('turns skewness after sqrt transform', df['turns_sqrt'].skew())
+    chess_df['turns_log'] = np.log(turns)
+    print('turns skewness after log transform', chess_df['turns_log'].skew())
+    chess_df['turns_sqrt'] = np.sqrt(rating_diff - rating_diff.min())
+    print('turns skewness after sqrt transform', chess_df['turns_sqrt'].skew())
 
     WHO_df = load_data(WHO_URL, RAW_DATA_DIR/'who.csv')
     WHO_df = clean_who(WHO_df)
@@ -73,3 +73,11 @@ if __name__ == '__main__':
     )
     print('ALCOHOL and INCOME_COMPOSITION_OF_RESOURCES under controlled GDP')
     print(corr_matrix)
+
+    win_rates = chess_df.groupby(['rated', 'winner']).size()
+    win_rates = win_rates.unstack(level=-1)
+    chi2, p, dof, expected_freq = stats.chi2_contingency(win_rates)
+    n = win_rates.sum().sum()
+    k = min(*win_rates.shape) - 1
+    cramers_v = np.sqrt(chi2/n * k)
+    print(f"effect size {cramers_v:3f}")

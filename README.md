@@ -31,3 +31,23 @@ In this case, log transform is aggressive, so we will use **sqrt transform** ins
 Taking entries with a GDP under 500 will give a **sample of size 666** which is acceptable compared to the **original population size of 2938**.
 
 Within our sample, the **correlation** between Alcohol consumption and income composition of reasoruces **drops to 0.268**, which confirms our assumption that the **GDP is a cofounder** between alcohol and income composition of reasources.
+
+### Q4
+Using the chi-square test to check independance between the winner and whether the games is rate or not. In the chess data we have the following distribution for winner over rated.
+
+| Rated | Black | Draw | White |
+|-------|------:|-----:|------:|
+| False | 1723  | 231  | 1949  |
+| True  | 7384  | 719  | 8052  |
+
+Using the chi-square test over the previous results, we obtain a **p value of 0.00034** which means the hypthosis that the winner is indepndent from whether the game is rate or not is rejected. 
+chi-square test yields the following expected values.
+
+| Rated | Black     | Draw     | White     |
+|-------|----------:|---------:|----------:|
+| False | 1772.09   | 184.86   | 1946.05   |
+| True  | 7334.91   | 765.14   | 8054.95   |
+
+In the actual data, draw tend to occure more than expected in rated games. Thus, draw probability is dependant on a game being rated or not.
+
+**Effect size (Cramers_v) = 0.028239**. This means that the reported results has little practical significane.
