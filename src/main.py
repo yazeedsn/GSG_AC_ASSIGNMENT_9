@@ -5,7 +5,7 @@ from pathlib import Path
 
 from fetch import load_data
 from clean import clean_chess, clean_who
-from fast_stats import distribution, correlation
+from fast_stats import distribution, correlation, ci
 from fast_stats.descriptive import basic_stats
 
 # Global Paths and urls
@@ -81,3 +81,22 @@ if __name__ == '__main__':
     k = min(*win_rates.shape) - 1
     cramers_v = np.sqrt(chi2/n * k)
     print(f"effect size {cramers_v:3f}")
+
+
+    print("--------- Parametric Confidence ---------")
+    unrated_turns = chess_df[~chess_df['rated']]['turns']
+    low, high = ci.confidence_interval(unrated_turns)
+    print(f"unrated turns confidence interval 95%  ({low:3f}, {high:3f})")
+    
+    rated_turns = chess_df[chess_df['rated']]['turns']
+    low, high = ci.confidence_interval(rated_turns)
+    print(f"rated turns confidence interval 95% ({low:3f}, {high:3f})")
+
+    print("--------- Bootstrap Confidence ---------")
+    unrated_turns = chess_df[~chess_df['rated']]['turns']
+    low, high = ci.bootstrap_ci(unrated_turns)
+    print(f"unrated turns confidence interval 95%  ({low:3f}, {high:3f})")
+    
+    rated_turns = chess_df[chess_df['rated']]['turns']
+    low, high = ci.bootstrap_ci(rated_turns)
+    print(f"rated turns confidence interval 95%  ({low:3f}, {high:3f})")

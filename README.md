@@ -35,6 +35,7 @@ Within our sample, the **correlation** between Alcohol consumption and income co
 ### Q4
 Using the chi-square test to check independance between the winner and whether the games is rate or not. In the chess data we have the following distribution for winner over rated.
 
+#### Real Distribution
 | Rated | Black | Draw | White |
 |-------|------:|-----:|------:|
 | False | 1723  | 231  | 1949  |
@@ -43,6 +44,7 @@ Using the chi-square test to check independance between the winner and whether t
 Using the chi-square test over the previous results, we obtain a **p value of 0.00034** which means the hypthosis that the winner is indepndent from whether the game is rate or not is rejected. 
 chi-square test yields the following expected values.
 
+#### Expected Distribution
 | Rated | Black     | Draw     | White     |
 |-------|----------:|---------:|----------:|
 | False | 1772.09   | 184.86   | 1946.05   |
@@ -51,3 +53,10 @@ chi-square test yields the following expected values.
 In the actual data, draw tend to occure more than expected in rated games. Thus, draw probability is dependant on a game being rated or not.
 
 **Effect size (Cramers_v) = 0.028239**. This means that the reported results has little practical significane.
+
+### Q5
+#### Confidence Intervals — Turns (95%)
+| Method     | Unrated CI         | Rated CI            |
+|------------|--------------------|----------------------|
+| Parametric | (53.26, 55.28)     | (61.44, 62.48)       |
+| Bootstrap  | (53.20, 55.30)     | (61.43, 62.50)       |
