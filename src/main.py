@@ -1,14 +1,16 @@
 import pandas as pd
-from clean import clean_chess
-from fast_stats import distribution
-from fast_stats.descriptive import basic_stats
+import numpy as np 
 from scipy import stats
 from pathlib import Path
+
 from fetch import load_data
-import numpy as np 
+from clean import clean_chess, clean_who
+from fast_stats import distribution, correlation
+from fast_stats.descriptive import basic_stats
 
 # Global Paths and urls
 RAW_DATA_DIR = Path('data/raw')
+WHO_URL = 'https://github.com/Priyankkoul/Life-Expectancy-WHO---Data-Analytics/blob/master/DATASET.csv?raw=true'
 
 
 
@@ -45,3 +47,29 @@ if __name__ == '__main__':
     df['turns_sqrt'] = np.sqrt(rating_diff - rating_diff.min())
     print('turns skewness after sqrt transform', df['turns_sqrt'].skew())
 
+    WHO_df = load_data(WHO_URL, RAW_DATA_DIR/'who.csv')
+    WHO_df = clean_who(WHO_df)
+    
+    corr_matrix = correlation.matrix(WHO_df, drop_columns=['YEAR'], method='pearson')
+    correlation.heatmap(
+        corr_matrix, 
+        'output/corr_matirx.png', 
+        title='WHO Correlation Matrix',
+        figsize=(8,8)
+    )
+
+    highest = correlation.strongest(corr_matrix, 'ALCOHOL', 3)
+    print('ALCOHOL has the highest correlations with: ')
+    print(highest)
+
+    distribution.plot(WHO_df['GDP'], 'output/gdp_distribution.png')
+    sample_df = WHO_df[(WHO_df['GDP'] < 500)]
+    print(f"Population Size: {len(WHO_df)}")
+    print(f"Sample Size: {len(sample_df)}")
+
+    corr_matrix = correlation.matrix(
+        sample_df[['ALCOHOL','INCOME_COMPOSITION_OF_RESOURCES']],
+        method='pearson'
+    )
+    print('ALCOHOL and INCOME_COMPOSITION_OF_RESOURCES under controlled GDP')
+    print(corr_matrix)
